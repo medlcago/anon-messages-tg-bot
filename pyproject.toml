@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "anon-messages-tg-bot"
+version = "0.1.0"
+description = ""
+authors = ["medlcago"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aiogram = "^3.13.1"
+loguru = "^0.7.2"
+pydantic-settings = "^2.5.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
