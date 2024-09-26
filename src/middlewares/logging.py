@@ -4,7 +4,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
 
 if TYPE_CHECKING:
-    from logging import Logger
+    from loguru import Logger
 
 
 class LoggingMiddleware(BaseMiddleware):
