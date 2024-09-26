@@ -13,3 +13,4 @@ class Settings(BaseSettings):
     )
 
     bot_token: SecretStr = Field(alias="BOT_TOKEN")
+    bot_name: str = "AnonBot"
