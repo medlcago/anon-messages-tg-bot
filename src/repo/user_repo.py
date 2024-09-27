@@ -1,18 +1,28 @@
-from __future__ import annotations
+from abc import abstractmethod, ABC
 
-from typing import TYPE_CHECKING
-
+from pydantic import ConfigDict, BaseModel
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import User
 
-if TYPE_CHECKING:
-    from sqlalchemy.ext.asyncio import AsyncSession
+
+class IUserRepo(ABC):
+    @abstractmethod
+    async def create_user(self, user: User) -> User:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_user(self, telegram_id: str) -> User | None:
+        raise NotImplementedError
 
 
-class UserRepo:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+class UserRepo(IUserRepo, BaseModel):
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+    )
+
+    session: AsyncSession
 
     async def create_user(self, user: User) -> User:
         self.session.add(user)

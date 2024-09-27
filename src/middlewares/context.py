@@ -6,7 +6,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
 
 from repo import UnitOfWork
-from services import Service
+from services import ServiceContainer
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -23,8 +23,7 @@ class ContextMiddleware(BaseMiddleware):
             data: Dict[str, Any],
     ) -> Any:
         uow = UnitOfWork(session=self.session)
-        service = Service(uow=uow)
 
-        data["service"] = service
+        data["service"] = ServiceContainer(uow=uow)
         data["session"] = self.session
         return await handler(event, data)

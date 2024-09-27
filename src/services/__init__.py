@@ -1,5 +1,5 @@
-from .service import Service
+from .service_container import ServiceContainer
 
 __all__ = (
-    "Service",
+    "ServiceContainer",
 )

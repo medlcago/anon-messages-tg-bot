@@ -1,16 +1,20 @@
-from __future__ import annotations
+from typing import Self, Any
 
-from typing import TYPE_CHECKING, Self
+from pydantic import Field, BaseModel, ConfigDict
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from repo.user_repo import UserRepo
-
-if TYPE_CHECKING:
-    from sqlalchemy.ext.asyncio import AsyncSession
+from repo.user_repo import IUserRepo, UserRepo
 
 
-class UnitOfWork:
-    def __init__(self, session: AsyncSession):
-        self.session = session
+class UnitOfWork(BaseModel):
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True,
+    )
+
+    session: AsyncSession
+    user_repo: IUserRepo = Field(default=None, init=False)
+
+    def model_post_init(self, __context: Any) -> None:
         self.user_repo = UserRepo(session=self.session)
 
     async def __aenter__(self) -> Self:

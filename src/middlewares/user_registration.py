@@ -10,7 +10,7 @@ from cachetools import TTLCache
 from core.logger import logger
 
 if TYPE_CHECKING:
-    from services import Service
+    from services import ServiceContainer
 
 
 class UserRegistrationMiddleware(BaseMiddleware):
@@ -33,8 +33,8 @@ class UserRegistrationMiddleware(BaseMiddleware):
 
         self.cache[cache_key] = event.from_user.id
 
-        service: Service = data.get("service")
-        user = await service.user_service.get_user(telegram_id=event.from_user.id)
+        service: ServiceContainer = data.get("service")
+        user = await service.user_service.get_user(telegram_id=str(event.from_user.id))
         if user:
             return await handler(event, data)
 
