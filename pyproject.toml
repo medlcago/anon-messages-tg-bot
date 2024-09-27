@@ -10,6 +10,11 @@ python = "^3.12"
 aiogram = "^3.13.1"
 loguru = "^0.7.2"
 pydantic-settings = "^2.5.2"
+sqlalchemy = "^2.0.35"
+asyncpg = "^0.29.0"
+alembic = "^1.13.3"
+redis = "^5.0.8"
+cachetools = "^5.5.0"
 
 
 [build-system]

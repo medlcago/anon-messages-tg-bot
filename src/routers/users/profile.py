@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from aiogram import Router, F
@@ -14,10 +16,10 @@ profile_router = Router(name="profile")
 
 
 @profile_router.callback_query(F.data == "profile")
-async def profile_callback(callback: CallbackQuery, bot: "Bot"):
-    link = await create_start_link(bot, str(callback.message.from_user.id), encode=True)
+async def profile_callback(callback: CallbackQuery, bot: Bot):
+    link = await create_start_link(bot, str(callback.from_user.id), encode=True)
     msg = USER_PROFILE.format(
-        user_id=callback.message.from_user.id,
+        user_id=callback.from_user.id,
         link=link
     )
     await callback.message.edit_text(

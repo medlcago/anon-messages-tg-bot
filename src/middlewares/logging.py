@@ -1,16 +1,12 @@
-from typing import Callable, Dict, Any, Awaitable, TYPE_CHECKING
+from typing import Callable, Dict, Any, Awaitable
 
 from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
 
-if TYPE_CHECKING:
-    from loguru import Logger
+from core.logger import logger
 
 
 class LoggingMiddleware(BaseMiddleware):
-    def __init__(self, logger: "Logger"):
-        self.logger = logger
-
     async def __call__(
             self,
             handler: Callable[[Message | CallbackQuery, Dict[str, Any]], Awaitable[Any]],
@@ -22,7 +18,7 @@ class LoggingMiddleware(BaseMiddleware):
         username = event.from_user.username
         text, chat_id = self._extract_text_and_chat_id(event)
 
-        self.logger.info(f"{full_name}[{user_id}({username})] --- {text} [chat_id = {chat_id}]")
+        logger.info(f"{full_name}[{user_id}({username})] --- {text} [chat_id = {chat_id}]")
 
         return await handler(event, data)
 
