@@ -1,0 +1,40 @@
+services:
+  bot:
+    container_name: anon_tg_bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        poetry run alembic upgrade head &&
+        poetry run python ./cmd/bot/main.py"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    container_name: postgres_anon_tg_bot
+    image: postgres:16
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DOCKER_PG_USER}
+      POSTGRES_PASSWORD: ${DOCKER_PG_PASSWORD}
+      POSTGRES_DB: ${DOCKER_PG_DB}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    container_name: redis_anon_tg_bot
+    image: redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+volumes:
+  pg_data:
+  redis_data:
