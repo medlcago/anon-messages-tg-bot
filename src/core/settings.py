@@ -1,7 +1,7 @@
 from enum import StrEnum
 from pathlib import Path
 
-from pydantic import SecretStr, RedisDsn, field_validator
+from pydantic import SecretStr, RedisDsn, field_validator, PostgresDsn
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -30,7 +30,7 @@ class Settings(BaseSettings):
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
         "pk": "pk_%(table_name)s",
     }
-    db_url: str
+    db_url: PostgresDsn
     redis_url: RedisDsn | None = None
 
     @field_validator("redis_url", mode="after")

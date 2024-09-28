@@ -4,10 +4,10 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisStorage
 
 from core.db import DatabaseHelper
+from core.logger import logger
+from core.settings import settings
 from middlewares import register_middlewares
 from routers import register_routes
-from src.core.logger import logger
-from src.core.settings import settings
 
 
 async def on_startup(bot: Bot):
@@ -17,7 +17,7 @@ async def on_startup(bot: Bot):
 
 async def main():
     db_helper = DatabaseHelper(
-        url=settings.db_url
+        url=str(settings.db_url)
     )
 
     bot = Bot(
@@ -48,4 +48,4 @@ if __name__ == '__main__':
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.info(f"Bot stopped")
+        logger.info("Bot stopped")
