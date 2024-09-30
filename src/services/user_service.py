@@ -18,7 +18,7 @@ class IUserService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_user(self, telegram_id: str) -> User | None:
+    async def get_user(self, telegram_id: str, is_active: bool = True, **kwargs) -> User | None:
         raise NotImplementedError
 
 
@@ -35,7 +35,7 @@ class UserService(IUserService, BaseModel):
             new_user = await session.user_repo.create_user(user=user)
             return new_user
 
-    async def get_user(self, telegram_id: str) -> User | None:
+    async def get_user(self, telegram_id: str, is_active: bool = True, **kwargs) -> User | None:
         async with self.uow as session:
-            user = await session.user_repo.get_user(telegram_id=telegram_id)
+            user = await session.user_repo.get_user(telegram_id=telegram_id, is_active=is_active, **kwargs)
             return user

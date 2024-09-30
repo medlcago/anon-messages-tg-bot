@@ -13,7 +13,7 @@ class IUserRepo(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_user(self, telegram_id: str) -> User | None:
+    async def get_user(self, telegram_id: str, **kwargs) -> User | None:
         raise NotImplementedError
 
 
@@ -29,7 +29,7 @@ class UserRepo(IUserRepo, BaseModel):
         await self.session.flush([user])
         return user
 
-    async def get_user(self, telegram_id: str) -> User | None:
-        stmt = select(User).filter_by(telegram_id=telegram_id)
+    async def get_user(self, telegram_id: str, **kwargs) -> User | None:
+        stmt = select(User).filter_by(telegram_id=telegram_id, **kwargs)
         user = await self.session.scalar(stmt)
         return user

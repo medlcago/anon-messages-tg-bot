@@ -8,10 +8,12 @@ from core.logger import logger
 from core.settings import settings
 from middlewares import register_middlewares
 from routers import register_routes
+from utils.commands import set_bot_commands
 
 
 async def on_startup(bot: Bot):
-    bot_info = await bot.get_me()
+    await set_bot_commands(bot=bot)
+    bot_info = await bot.me()
     logger.info(f"Bot started: {bot_info.full_name}[@{bot_info.username}]")
 
 

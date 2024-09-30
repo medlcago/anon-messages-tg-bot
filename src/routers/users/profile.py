@@ -3,13 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
 from aiogram.utils.deep_linking import create_start_link
 
 from core.text import USER_PROFILE
 from keyboards.inline import back_main_menu_keyboard
 
 if TYPE_CHECKING:
+    from aiogram.types import CallbackQuery
     from aiogram import Bot
 
 profile_router = Router(name="profile")
