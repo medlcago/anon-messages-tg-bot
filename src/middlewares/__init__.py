@@ -7,6 +7,7 @@ from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 
 from .context import ContextMiddleware
 from .logging import LoggingMiddleware
+from .translator import TranslatorMiddleware
 from .user_registration import UserRegistrationMiddleware
 
 if TYPE_CHECKING:
@@ -14,6 +15,9 @@ if TYPE_CHECKING:
 
 
 def register_middlewares(dp: Dispatcher, session: AsyncSession) -> None:
+    dp.message.outer_middleware(TranslatorMiddleware())
+    dp.callback_query.outer_middleware(TranslatorMiddleware())
+
     dp.message.outer_middleware(ContextMiddleware(session=session))
 
     dp.callback_query.middleware(CallbackAnswerMiddleware(pre=False, text="OK"))

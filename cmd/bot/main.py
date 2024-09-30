@@ -6,6 +6,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from core.db import DatabaseHelper
 from core.logger import logger
 from core.settings import settings
+from language.translator import Translator
 from middlewares import register_middlewares
 from routers import register_routes
 from utils.commands import set_bot_commands
@@ -21,6 +22,8 @@ async def main():
     db_helper = DatabaseHelper(
         url=str(settings.db_url)
     )
+
+    translator = Translator()
 
     bot = Bot(
         token=settings.bot_token.get_secret_value(),
@@ -41,7 +44,7 @@ async def main():
     dp.startup.register(on_startup)
     register_middlewares(dp, session=db_helper.session)
     register_routes(dp)
-    await dp.start_polling(bot, close_bot_session=True, config=settings)
+    await dp.start_polling(bot, close_bot_session=True, config=settings, translator=translator)
 
 
 if __name__ == '__main__':
